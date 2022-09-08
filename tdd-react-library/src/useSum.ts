@@ -1,9 +1,13 @@
-import {useState} from 'react';
+import {useState, useMemo, useCallback} from 'react';
 
 export function useSum() {
-  const [value, setValue] = useState(0);
+  const [numbers, setNumbers] = useState<number[]>([]);
   return {
-    sum: value,
-    add: setValue,
-  }
+    sum: useMemo(() => numbers.reduce((a,b)=> a + b, 0 ), [numbers]),
+    add : useCallback((value: number) => {
+      setNumbers([...numbers,value]);
+    },
+    [numbers]
+  ),
+  };
 }
